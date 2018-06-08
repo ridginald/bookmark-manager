@@ -23,10 +23,19 @@ describe Bookmark do
       expect(Bookmark.all).to include 'http://www.testbookmark.com'
     end
 
-    # it 'does not create a new bookmark if the URL is not valid' do
-    #   Bookmark.create(url: 'not a real bookmark')
-    #   expect(Bookmark.all).not_to include 'not a real bookmark'
-    # end
+    it 'does not create a new bookmark if the URL is not valid' do
+      Bookmark.create(url: 'not a real bookmark')
+      expect(Bookmark.all).not_to include 'not a real bookmark'
+    end
+
+
+  end
+
+  describe '.delete' do
+    it 'deletes a bookmark' do
+      Bookmark.delete(url: 'http://www.testbookmark.com')
+      expect(Bookmark.all).not_to include 'http://www.testbookmark.com'
+    end
   end
 
   describe '#==' do

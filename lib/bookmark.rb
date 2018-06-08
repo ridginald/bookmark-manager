@@ -32,12 +32,23 @@ class Bookmark
       Bookmark.new(result.first['id'], result.first['url'])
     end
 
-    def self.is_url?(url)
-      url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+    def self.delete(options)
+      if ENV['ENVIRONMENT'] == 'test'
+        connection = PG.connect(dbname: 'bookmark_manager_test')
+      else
+        connection = PG.connect(dbname: 'bookmark_manager')
+      end
+      result = connection.exec("DELETE FROM bookmarks WHERE url='#{options[:url]}'")
     end
 
     def ==(other)
       @id == other.id
+    end
+
+    private
+
+    def self.is_url?(url)
+      url =~ /\A#{URI::regexp(['http', 'https'])}\z/
     end
 
 end
